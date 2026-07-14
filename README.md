@@ -64,30 +64,29 @@ For scoring each song, it uses a combination of song features and user taste pre
 * Secondary features not used in this release but useful for next version - valence, danceability, tempo_bpm.
 * Features not used for recommendation - id, title, artist as they do not directly indicate similarity from user standpoint. 
 
-* Each feature is assigned a weighted score. Weights are defined as follows based on how we perceive user would like this.
-   - Genre 40%
-   - Mood 25%
-   - Energy 20%
-   - Acoustic 15%
+* Each feature is assigned a point score. Points are defined as follows based on how we want this system to balance preference signals.
+   - Genre = 2.0 points
+   - Mood = 1.25 points
+   - Energy similarity = 1.0 point
+   - Acousticness similarity = 0.75 points
 
-This is because genre and mood are the strongest signals of taste. Energy is also important, acousticness is useful but slightly less important.
+This means genre remains the strongest signal, mood is still important, and energy/acousticness act as continuous similarity boosters.
 
-* Numerical values like energy and acousticness are converted to a similarity score. eg. User energy level preference=t, song energy level=x. 
-Distance /difference d = x-t
-Similarity s = 1-d 
-i.e. s_energy = 1−∣x−t∣
+* Numerical values like energy and acousticness are converted to a similarity score. For example, if the user target energy is `t` and the song energy is `x`:
+  - `distance = abs(x - t)`
+  - `s_energy = max(0.0, 1.0 - distance)`
+  - `s_acoustic = max(0.0, 1.0 - abs(x_acousticness - t_acousticness))`
 
-* Category features like mood and genre are assigned score of 0 or 1 based on user preference. eg. if user profile has genre=pop and song genre=pop, s_genre=1. If song genre = hiphop, s_genre = 0.
+* Category features like mood and genre are assigned score of 0 or 1 based on user preference. For example, if the user profile has `genre=pop` and the song genre is `pop`, then `s_genre=1`; otherwise `s_genre=0`.
 
 
-_score = 0.40 * s_ genre + 0.25 * s_mood + 0.20 * s_energy +0.15 * s_acoustic_
-​
-s_genre = genre score, 0 or 1
-s_mood = mood score, 0 or 1
-s_energy = energy score, between 0-1
-s_acoustic = acousticness score, between 0-1
+_score = 2.0 * s_genre + 1.25 * s_mood + 1.0 * s_energy + 0.75 * s_acoustic_
 
-where 0.4 is the weight for genre, 0.25 for mood...
+where:
+- `s_genre` = genre score, 0 or 1
+- `s_mood` = mood score, 0 or 1
+- `s_energy` = energy similarity score, between 0 and 1
+- `s_acoustic` = acousticness similarity score, between 0 and 1
 
 ### Ranking
 After all songs are scored, the system:
