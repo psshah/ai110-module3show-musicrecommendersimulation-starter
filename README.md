@@ -101,6 +101,7 @@ Real world systems uses richer data and prioritze for business goals and user be
 
 ### What this version prioritizes
 * Feature similarity - it prioritizes songs that are similar to the ones user has a taste preference for.
+* It does take a genre-first approach and prioritizes that. It gives some weight to mood though.
 * Predictabile experience - since features are static and not dynamic (like acitivty or other user actions), the system will not recommend very different songs. 
 
 ---
@@ -145,12 +146,48 @@ You can add more tests in `tests/test_recommender.py`.
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
 
 ```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
+(.venv) priyankashah@Priyankas-MacBook-Air src % python3 -m main
+Loaded 22 songs
+
+User preference:
+  Genre: pop
+  Mood: happy
+  Target energy: 0.7
+  Target acousticness: 0.3
+
+Top recommendations:
+
+1. Sunrise City by Neon Echo (Score: 4.79)
+   • genre: pop, match = +2.0
+   • mood: happy, match = +1.25
+   • energy: 0.82, similarity = +0.88
+   • acousticness: 0.18, similarity = +0.66
+
+2. Gym Hero by Max Pulse (Score: 3.33)
+   • genre: pop, match = +2.0
+   • mood: intense, match = 0
+   • energy: 0.93, similarity = +0.77
+   • acousticness: 0.05, similarity = +0.56
+
+3. Iron Sky by Crimson Ash (Score: 3.30)
+   • genre: pop, match = +2.0
+   • mood: defiant, match = 0
+   • energy: 0.95, similarity = +0.75
+   • acousticness: 0.04, similarity = +0.55
+
+4. Golden Meadow by Harbor Light (Score: 3.22)
+   • genre: pop, match = +2.0
+   • mood: hopeful, match = 0
+   • energy: 0.58, similarity = +0.88
+   • acousticness: 0.84, similarity = +0.34
+
+5. Rooftop Lights by Indigo Parade (Score: 2.90)
+   • genre: indie pop, match = 0
+   • mood: happy, match = +1.25
+   • energy: 0.76, similarity = +0.94
+   • acousticness: 0.35, similarity = +0.71
+
+(.venv) priyankashah@Priyankas-MacBook-Air src % 
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
