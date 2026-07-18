@@ -106,8 +106,18 @@ Ideas for how you would improve the model next.
 
 A few sentences about your experience.  
 
-Prompts:  
+What was your biggest learning moment during this project?
+* Biggest learning moment was how much planning upfront makes execution easier and clearer. 
+* Another learning that I consciously applied to this project was to not give a wide prompt to Claude. Instead I tried to infer the execution logic/workflow myself, and gave it a step by step instruction on how I would like code to be. eg. Loop over each song, compute score using this formula and this specific weight as opposed to 'implement this method using the logic defined in README lines x-y'.
 
-- What you learned about recommender systems  
-- Something unexpected or interesting you discovered  
-- How this changed the way you think about music recommendation apps  
+How did using AI tools help you, and when did you need to double-check them?
+* There was a issue with how songs were handled between load_songs() and recommend_songs() i.e. song as object versus song as dict. AI helped iron out the right approach of not changing method signature but handling this within method itself.
+* I needed to double-check and course correct on couple of things (1) how reason was written for scoring each song. (2) Implementation of recommend_song was too complication, it used two list comprehensions unnecessarily, making code less readable. I had to prompt it to keep the implementation simple. 
+* Also, coming from C++ background, I was tempted to use heap like structure for top K songs. Using AI helped understand why sorted() is a better and reasonable choice given limited songs, and sorted is optimized.
+
+What surprised you about how simple algorithms can still "feel" like recommendations?
+* Giving a score and ranking by that score is a fairly straightforward approach, but adding weights definitely makes it strong approach. 
+
+What would you try next if you extended this project?
+* Use signals other than the 4 used (genre, mood, etc) to make it more diverse.
+* Allow user to express more preferences eg. two genres, two moods, etc. or preferences on a scale. Generate different playlists based off that. 
