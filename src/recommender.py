@@ -29,7 +29,7 @@ class UserProfile:
     favorite_genre: str
     favorite_mood: str
     target_energy: float
-    likes_acoustic: bool
+    target_acousticness: float
 
 class Recommender:
     """
@@ -41,13 +41,15 @@ class Recommender:
 
     def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
         """Returns the top k songs recommended for the given user."""
-        # TODO: Implement recommendation logic
-        return self.songs[:k]
+        user_prefs = asdict(user)
+        song_dicts = [asdict(song) for song in self.songs]
+        ranked = recommend_songs(user_prefs, song_dicts, k=k)
+        return [Song(**song_dict) for song_dict, _score, _explanation in ranked]
 
     def explain_recommendation(self, user: UserProfile, song: Song) -> str:
         """Returns a human-readable explanation for why a song was recommended."""
-        # TODO: Implement explanation logic
-        return "Explanation placeholder"
+        _score, reasons = score_song(asdict(user), asdict(song))
+        return "\n".join(reasons)
 
 def load_songs(csv_path: str) -> List[Dict]:
     """Loads songs from a CSV file and returns them as a list of dicts."""

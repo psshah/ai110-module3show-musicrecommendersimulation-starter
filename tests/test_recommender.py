@@ -1,4 +1,13 @@
+import re
+
 from src.recommender import Song, UserProfile, Recommender
+
+
+def _energy_points(explanation: str) -> float:
+    match = re.search(r"Energy .* \(\+([\d.]+) pts\)", explanation)
+    assert match, f"could not find energy points in explanation: {explanation!r}"
+    return float(match.group(1))
+
 
 def make_small_recommender() -> Recommender:
     songs = [
@@ -35,7 +44,7 @@ def test_recommend_returns_songs_sorted_by_score():
         favorite_genre="pop",
         favorite_mood="happy",
         target_energy=0.8,
-        likes_acoustic=False,
+        target_acousticness=0.2,
     )
     rec = make_small_recommender()
     results = rec.recommend(user, k=2)
@@ -51,7 +60,7 @@ def test_explain_recommendation_returns_non_empty_string():
         favorite_genre="pop",
         favorite_mood="happy",
         target_energy=0.8,
-        likes_acoustic=False,
+        target_acousticness=0.2,
     )
     rec = make_small_recommender()
     song = rec.songs[0]
@@ -59,3 +68,21 @@ def test_explain_recommendation_returns_non_empty_string():
     explanation = rec.explain_recommendation(user, song)
     assert isinstance(explanation, str)
     assert explanation.strip() != ""
+    # song[0] is pop/happy, matching the user's favorite_genre and favorite_mood
+    assert "Genre match" in explanation
+    assert "Mood match" in explanation
+    # song[0] energy (0.8) equals the user's target_energy (0.8), so points should be high
+    assert _energy_points(explanation) > 1.5
+
+
+    song = rec.songs[1]
+    explanation = rec.explain_recommendation(user, song)
+    assert isinstance(explanation, str)
+    assert explanation.strip() != ""
+    # song[1] is lofi/chill, mismatching the user's favorite_genre and favorite_mood
+    assert "Genre mismatch" in explanation
+    assert "Mood mismatch" in explanation
+    # song[1] energy (0.4) is far from the user's target_energy (0.8), so points should be low
+    assert _energy_points(explanation) < 1.5
+
+
