@@ -146,10 +146,10 @@ You can add more tests in `tests/test_recommender.py`.
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
 
 ```
-(.venv) priyankashah@Priyankas-MacBook-Air src % python3 -m main
+(.venv) priyankashah@Priyankas-MacBook-Air src % python3 -m main 
 Loaded 22 songs
 
-User preference:
+User preference: normal_pop_happy
   Genre: pop
   Mood: happy
   Target energy: 0.7
@@ -157,37 +157,34 @@ User preference:
 
 Top recommendations:
 
-1. Sunrise City by Neon Echo (Score: 4.79)
-   • genre: pop, match = +2.0
-   • mood: happy, match = +1.25
-   • energy: 0.82, similarity = +0.88
-   • acousticness: 0.18, similarity = +0.66
-
-2. Gym Hero by Max Pulse (Score: 3.33)
-   • genre: pop, match = +2.0
-   • mood: intense, match = 0
-   • energy: 0.93, similarity = +0.77
-   • acousticness: 0.05, similarity = +0.56
-
-3. Iron Sky by Crimson Ash (Score: 3.30)
-   • genre: pop, match = +2.0
-   • mood: defiant, match = 0
-   • energy: 0.95, similarity = +0.75
-   • acousticness: 0.04, similarity = +0.55
-
-4. Golden Meadow by Harbor Light (Score: 3.22)
-   • genre: pop, match = +2.0
-   • mood: hopeful, match = 0
-   • energy: 0.58, similarity = +0.88
-   • acousticness: 0.84, similarity = +0.34
-
-5. Rooftop Lights by Indigo Parade (Score: 2.90)
-   • genre: indie pop, match = 0
-   • mood: happy, match = +1.25
-   • energy: 0.76, similarity = +0.94
-   • acousticness: 0.35, similarity = +0.71
-
-(.venv) priyankashah@Priyankas-MacBook-Air src % 
++--------+----------------+---------------+---------+--------------------------------------+
+|   Rank | Title          | Artist        |   Score | Reasons                              |
++========+================+===============+=========+======================================+
+|      1 | Sunrise City   | Neon Echo     |    4.67 | ✓ Genre match: pop (+1.0)            |
+|        |                |               |         | ✓ Mood match: happy (+1.25)          |
+|        |                |               |         | Energy 0.82 vs 0.7, (+1.76 pts)      |
+|        |                |               |         | Acousticness 0.18 vs 0.3 (+0.66 pts) |
++--------+----------------+---------------+---------+--------------------------------------+
+|      2 | Rooftop Lights | Indigo Parade |    3.84 | ✗ Genre mismatch: indie pop          |
+|        |                |               |         | ✓ Mood match: happy (+1.25)          |
+|        |                |               |         | Energy 0.76 vs 0.7, (+1.88 pts)      |
+|        |                |               |         | Acousticness 0.35 vs 0.3 (+0.71 pts) |
++--------+----------------+---------------+---------+--------------------------------------+
+|      3 | Gym Hero       | Max Pulse     |    3.1  | ✓ Genre match: pop (+1.0)            |
+|        |                |               |         | ✗ Mood mismatch: intense             |
+|        |                |               |         | Energy 0.93 vs 0.7, (+1.54 pts)      |
+|        |                |               |         | Acousticness 0.05 vs 0.3 (+0.56 pts) |
++--------+----------------+---------------+---------+--------------------------------------+
+|      4 | Golden Meadow  | Harbor Light  |    3.1  | ✓ Genre match: pop (+1.0)            |
+|        |                |               |         | ✗ Mood mismatch: hopeful             |
+|        |                |               |         | Energy 0.58 vs 0.7, (+1.76 pts)      |
+|        |                |               |         | Acousticness 0.84 vs 0.3 (+0.34 pts) |
++--------+----------------+---------------+---------+--------------------------------------+
+|      5 | Iron Sky       | Crimson Ash   |    3.05 | ✓ Genre match: pop (+1.0)            |
+|        |                |               |         | ✗ Mood mismatch: defiant             |
+|        |                |               |         | Energy 0.95 vs 0.7, (+1.5 pts)       |
+|        |                |               |         | Acousticness 0.04 vs 0.3 (+0.55 pts) |
++--------+----------------+---------------+---------+--------------------------------------+
 ```
 
 Sample output for some extreme or adverserial user preferences.

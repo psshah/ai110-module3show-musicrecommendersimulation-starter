@@ -11,7 +11,21 @@ You will implement the functions in recommender.py:
 
 import os
 
+from tabulate import tabulate
+
 from recommender import load_songs, recommend_songs
+
+
+def print_recommendations_table(recommendations) -> None:
+    rows = []
+    for rank, (song, score, explanation) in enumerate(recommendations, start=1):
+        rows.append([rank, song["title"], song["artist"], f"{score:.2f}", explanation])
+
+    print(tabulate(
+        rows,
+        headers=["Rank", "Title", "Artist", "Score", "Reasons"],
+        tablefmt="grid",
+    ))
 
 
 def main() -> None:
@@ -68,32 +82,7 @@ def main() -> None:
         print(f"  Target energy: {user_prefs['target_energy']}")
         print(f"  Target acousticness: {user_prefs['target_acousticness']}")
         print("\nTop recommendations:\n")
-        for rank, rec in enumerate(recommendations, start=1):
-            song, score, explanation = rec
-            print(f"{rank}. {song['title']} by {song['artist']} (Score: {score:.2f})")
-            for reason in explanation.split("\n"):
-                print(f"   • {reason}")
-            print()
-        print("-" * 40)
-
-    adversarial_profiles = [
-    ]
-
-    for user_prefs in adversarial_profiles:            
-        recommendations = recommend_songs(user_prefs, songs, k=5)
-
-        print("\nUser preference:")
-        print(f"  Genre: {user_prefs['favorite_genre']}")
-        print(f"  Mood: {user_prefs['favorite_mood']}")
-        print(f"  Target energy: {user_prefs['target_energy']}")
-        print(f"  Target acousticness: {user_prefs['target_acousticness']}")
-        print("\nTop recommendations:\n")
-        for rank, rec in enumerate(recommendations, start=1):
-            song, score, explanation = rec
-            print(f"{rank}. {song['title']} by {song['artist']} (Score: {score:.2f})")
-            for reason in explanation.split("\n"):
-                print(f"   • {reason}")
-            print()
+        print_recommendations_table(recommendations)
         print("-" * 40)
 
 if __name__ == "__main__":

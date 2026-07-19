@@ -85,32 +85,39 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     reasons = []
     score = 0.0
 
+    # ✓/✗ prefixes belong in the presentation layer in a real project; kept here for simplicity
     # Genre is a binary match: 1 if equal to the user's favorite, else 0
     s_genre = 1 if song["genre"] == user_prefs["favorite_genre"] else 0
     genre_points = GENRE_WEIGHT if s_genre else 0
-    reasons.append(f"genre: {song['genre']}, match = +{genre_points}" if s_genre
-                   else f"genre: {song['genre']}, match = 0")
+    reasons.append(f"✓ Genre match: {song['genre']} (+{genre_points})" if s_genre
+                   else f"✗ Genre mismatch: {song['genre']}")
     score += GENRE_WEIGHT * s_genre
 
     # Mood is a binary match: 1 if equal to the user's favorite, else 0
     s_mood = 1 if song["mood"] == user_prefs["favorite_mood"] else 0
     mood_points = MOOD_WEIGHT if s_mood else 0
-    reasons.append(f"mood: {song['mood']}, match = +{mood_points}" if s_mood
-                   else f"mood: {song['mood']}, match = 0")
+    reasons.append(f"✓ Mood match: {song['mood']} (+{mood_points})" if s_mood
+                   else f"✗ Mood mismatch: {song['mood']}")
     score += MOOD_WEIGHT * s_mood
 
     # Energy similarity shrinks toward 0 the further the song is from the target energy
     energy_distance = abs(song["energy"] - user_prefs["target_energy"])
     s_energy = max(0.0, 1.0 - energy_distance)
     energy_points = round(ENERGY_WEIGHT * s_energy, 2)
-    reasons.append(f"energy: {song['energy']}, similarity = +{energy_points}")
+    reasons.append(
+        f"Energy {song['energy']} vs {user_prefs['target_energy']}"
+        f", (+{energy_points} pts)"
+    )
     score += energy_points
 
     # Acousticness similarity shrinks toward 0 the further the song is from the target acousticness
     acoustic_distance = abs(song["acousticness"] - user_prefs["target_acousticness"])
     s_acoustic = max(0.0, 1.0 - acoustic_distance)
     acoustic_points = round(ACOUSTIC_WEIGHT * s_acoustic, 2)
-    reasons.append(f"acousticness: {song['acousticness']}, similarity = +{acoustic_points}")
+    reasons.append(
+        f"Acousticness {song['acousticness']} vs {user_prefs['target_acousticness']}"
+        f" (+{acoustic_points} pts)"
+    )
     score += acoustic_points
 
     return round(score, 2), reasons
